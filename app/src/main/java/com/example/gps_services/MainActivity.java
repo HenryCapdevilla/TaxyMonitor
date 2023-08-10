@@ -4,6 +4,11 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.telephony.SmsManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
@@ -22,7 +27,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int FAST_UDPDATE_INTERVAL = 5;
 
     private static final int PERMISSION_FINE_LOCATION = 99;
-    private TextView tv_lat, tv_lon, tv_altitude, tv_address;
+    private TextView tv_lbladdress;
+
+    private Button Btn_Get_Location;
+
+    private Button Btn_send_msm;
+
+    private EditText editTextPhone;
 
     //Location Request is config a file
     LocationRequest locationRequest;
@@ -35,10 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Instanciamos las variables
-        tv_lat = findViewById(R.id.tv_lat);
-        tv_lon = findViewById(R.id.tv_lon);
-        tv_altitude = findViewById(R.id.tv_altitude);
-        tv_address = findViewById(R.id.tv_address);
+        tv_lbladdress = findViewById(R.id.tv_lbladdress);
 
         //Colocamos la configuración de  LocationRequest
         locationRequest = new LocationRequest();
@@ -52,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         updateGPS();
+        Send_Msm();
     }
 
     @Override
@@ -59,13 +68,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
             case PERMISSION_FINE_LOCATION:
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     updateGPS();}
-            else{
+                else{
                     Toast.makeText(this, "Esta aplicación requiere de permiso concedido para trabajar con propiedades ", Toast.LENGTH_SHORT).show();
                     finish();
-            }
-            break;
+                }
+                break;
         }
     }
 
@@ -93,17 +102,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUIValues(Location location) {
-        //Update all of the text view with a new location
-        tv_lat.setText(String.valueOf(location.getLatitude()));
-        tv_lon.setText(String.valueOf(location.getLongitude()));
+    private void Send_Msm(){
+        //Obtenemos el permiso del usuario
+        Btn_send_msm = findViewById(R.id.Btn_send_msm);
+        editTextPhone = findViewById(R.id.editTextPhone);
 
-        if(location.hasAltitude()){
-            tv_altitude.setText(String.valueOf(location.getAltitude()));
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS}, 1);
         }
-        else {
-            tv_altitude.setText("N/A");
-        }
+
+        Btn_send_msm.setOnClickListener(view -> {
+
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(editTextPhone.getText().toString(), null, tv_lbladdress.getText().toString(), null, null);
+
+            Toast.makeText(MainActivity.this, "SMS ENVIADO", Toast.LENGTH_LONG).show();
+
+        });
 
     }
-}
+
+    private void updateUIValues(Location location) {
+        Btn_Get_Location = findViewById(R.id.Btn_Get_Location);
+        Btn_Get_Location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aquí colocas el código que deseas que se ejecute cuando se hace clic en el botón
+                // Por ejemplo, aquí llamamos a la función updateUIValues y pasamos la ubicación
+                updateUIValues(location);
+
+                // Resto de tu código updateUIValues
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                double altitude = location.getAltitude();
+                double time = location.getTime();
+
+                // Concatenar la latitud y longitud en una cadena de texto
+                String latLngAltText = "Lat: " + latitude + ", Lon: " + longitude + ", Alt: " + altitude + ", ToF: " + time;
+
+                // Actualizar el cuadro de texto con la cadena resultante
+                tv_lbladdress.setText(latLngAltText);
+            }
+        });
+    }
+};

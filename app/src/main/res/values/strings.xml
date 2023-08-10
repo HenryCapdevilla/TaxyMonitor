@@ -5,9 +5,15 @@
     <string name="Longitud_label">LONGITUD</string>
     <string name="Latitud_label">LATITUD</string>
     <string name="ALTITUD_label">ALTITUD</string>
+    <string name="COORDENADAS_label">COORDENADAS</string>
     <string name="Input_ALTITUD_label">0.00</string>
     <string name="Input_LATITUD_label">0.00</string>
     <string name="Input_LONGITUD_label">0.00</string>
+    <string name="Btn_get_location_msm">GET LOCATION</string>
+    <string name="title_send_msm">ENVIA TU MENSAJE</string>
+    <string name="Number_send_msm">NÚMERO DE TELÉFONO: </string>
+    <string name="Number_example_send_msm">xxxxxxxxxx </string>
+    <string name="Btn_send_msm">SEND MSM</string>
     <string name="ADRESS_label">DIRECCIÓN</string>
     <string name="hello_first_fragment">¡Hola desde el primer fragmento!</string>
     <string name="next">Siguiente</string>

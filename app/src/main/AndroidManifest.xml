@@ -2,7 +2,13 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- Declarar el permiso GPS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- Declarar el permiso SEND_SMS -->
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+
+    <!-- Declarar el uso opcional del hardware de telefonia -->
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
