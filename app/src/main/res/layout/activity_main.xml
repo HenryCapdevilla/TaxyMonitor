@@ -4,75 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#5E3ED5"
+    android:background="#7040AD"
     tools:context=".MainActivity">
-
-    <ImageView
-        android:id="@+id/imageView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/mapsicle_map"
-        android:contentDescription="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/mapsicle_map" />
 
     <ImageView
         android:id="@+id/imageView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="16dp"
         android:contentDescription="@null"
         android:src="@drawable/component_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/component_1" />
-
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/rectangle_2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@drawable/rectangle_2"
-        android:contentDescription="@null"/>
+        app:srcCompat="@drawable/component_1" />
 
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         android:contentDescription="@null"
         android:src="@drawable/rectangle_3"
         app:layout_constraintBottom_toTopOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView10"
-        app:layout_constraintVertical_bias="0.461"
         app:srcCompat="@drawable/rectangle_3" />
 
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@null"
         android:src="@drawable/rectangle_6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.973"
-        tools:srcCompat="@drawable/rectangle_6"
-        android:contentDescription="@null"/>
+        app:layout_constraintVertical_bias="0.733"
+        tools:srcCompat="@drawable/rectangle_6" />
 
     <ImageView
         android:id="@+id/imageView7"
@@ -82,8 +54,8 @@
         android:layout_marginEnd="8dp"
         android:contentDescription="@null"
         android:src="@drawable/image_1"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPhone"
-        app:layout_constraintTop_toTopOf="@+id/editTextPhone"
+        app:layout_constraintEnd_toEndOf="@+id/ipAddressEditText"
+        app:layout_constraintTop_toTopOf="@+id/ipAddressEditText"
         app:srcCompat="@drawable/image_1" />
 
     <ImageView
@@ -101,9 +73,9 @@
         app:srcCompat="@drawable/rectangle_4" />
 
     <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="258dp"
-        android:layout_height="54dp"
+        android:id="@+id/ipAddressEditText"
+        android:layout_width="228dp"
+        android:layout_height="52dp"
         android:ems="10"
         android:inputType="phone"
         android:lineSpacingExtra="8sp"
@@ -114,16 +86,17 @@
         android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0.305" />
+        app:layout_constraintVertical_bias="0.217" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:contentDescription="Número de teléfono"
+        android:contentDescription="Número de IP"
         android:text="@string/Number_send_msm"
         android:textAllCaps="true"
         android:textColor="#9D9D9D"
@@ -133,27 +106,39 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0.201" />
+        app:layout_constraintVertical_bias="0.333" />
 
     <Button
-        android:id="@+id/Btn_send_msm"
+        android:id="@+id/tcpButton"
         android:layout_width="134dp"
         android:layout_height="48dp"
-        android:text="@string/Btn_send_msm"
+        android:text="@string/Btn_send_ip_tcp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.212"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0.865" />
+        app:layout_constraintVertical_bias="0.841" />
+
+    <Button
+        android:id="@+id/udpButton"
+        android:layout_width="134dp"
+        android:layout_height="48dp"
+        android:text="@string/Btn_send_ip_udp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.783"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintVertical_bias="0.841" />
 
     <Button
         android:id="@+id/Btn_Get_Location"
         android:layout_width="154dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/Btn_get_location_msm"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -161,31 +146,32 @@
 
     <TextView
         android:id="@+id/tv_lbladdress"
-        android:layout_width="268dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="267dp"
+        android:layout_height="54dp"
         android:orientation="horizontal"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textColor="#3E3E3E"
         android:textSize="12sp"
         android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView8" />
+        app:layout_constraintTop_toTopOf="@+id/imageView9" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="144dp"
         android:text="@string/COORDENADAS_label"
         android:textColor="#3E3E3E"
         android:textSize="12sp"
         android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="@+id/Btn_Get_Location"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.223"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView10"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintTop_toTopOf="@+id/imageView9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

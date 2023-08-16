@@ -4,7 +4,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
@@ -12,9 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
+import java.util.Date;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -22,21 +23,15 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class MainActivity extends AppCompatActivity {
-    public static final int DEFAULT_UPDATE_INTERVAL = 30;
-    public static final int FAST_UDPDATE_INTERVAL = 5;
 
+
+public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_FINE_LOCATION = 99;
     private TextView tv_lbladdress;
-
     private Button Btn_Get_Location;
-
-    private Button Btn_send_msm;
-
-    private EditText editTextPhone;
-
-    //Location Request is config a file
-    LocationRequest locationRequest;
+    private Button tcpButton;
+    private Button udpButton;
+    private EditText ipAddressEditText;
 
     //Google Api for location services.
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -48,19 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // Instanciamos las variables
         tv_lbladdress = findViewById(R.id.tv_lbladdress);
 
-        //Colocamos la configuración de  LocationRequest
-        locationRequest = new LocationRequest();
-
-        //How often does the default location check accur?
-        locationRequest.setInterval(1000 * DEFAULT_UPDATE_INTERVAL);
-
-        //How often does the location check accur when set to the most frequent update?
-        locationRequest.setFastestInterval(1000 + FAST_UDPDATE_INTERVAL);
-
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
         updateGPS();
-        Send_Msm();
     }
 
     @Override
@@ -102,26 +85,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void Send_Msm(){
-        //Obtenemos el permiso del usuario
-        Btn_send_msm = findViewById(R.id.Btn_send_msm);
-        editTextPhone = findViewById(R.id.editTextPhone);
-
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS}, 1);
-        }
-
-        Btn_send_msm.setOnClickListener(view -> {
-
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(editTextPhone.getText().toString(), null, tv_lbladdress.getText().toString(), null, null);
-
-            Toast.makeText(MainActivity.this, "SMS ENVIADO", Toast.LENGTH_LONG).show();
-
-        });
-
-    }
-
     private void updateUIValues(Location location) {
         Btn_Get_Location = findViewById(R.id.Btn_Get_Location);
         Btn_Get_Location.setOnClickListener(new View.OnClickListener() {
@@ -136,13 +99,16 @@ public class MainActivity extends AppCompatActivity {
                 double longitude = location.getLongitude();
                 double altitude = location.getAltitude();
                 double time = location.getTime();
+                Date date = new Date((long) time);  // Convertir el valor de tiempo a una instancia de Date
+                String formattedDate = date.toString();
 
                 // Concatenar la latitud y longitud en una cadena de texto
-                String latLngAltText = "Lat: " + latitude + ", Lon: " + longitude + ", Alt: " + altitude + ", ToF: " + time;
+                String latLngAltText = "Lat: " + latitude + ", Lon: " + longitude + ", Alt: " + altitude + ", Time Stamp: " + formattedDate;
 
                 // Actualizar el cuadro de texto con la cadena resultante
                 tv_lbladdress.setText(latLngAltText);
             }
         });
     }
+
 };

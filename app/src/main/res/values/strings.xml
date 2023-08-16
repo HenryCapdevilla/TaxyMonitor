@@ -1,27 +1,11 @@
 <resources>
-    <string name="app_name">GPS_Services</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">VehiSPY</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="Longitud_label">LONGITUD</string>
-    <string name="Latitud_label">LATITUD</string>
-    <string name="ALTITUD_label">ALTITUD</string>
-    <string name="COORDENADAS_label">COORDENADAS</string>
-    <string name="Input_ALTITUD_label">0.00</string>
-    <string name="Input_LATITUD_label">0.00</string>
-    <string name="Input_LONGITUD_label">0.00</string>
-    <string name="Btn_get_location_msm">GET LOCATION</string>
-    <string name="title_send_msm">ENVIA TU MENSAJE</string>
-    <string name="Number_send_msm">NÚMERO DE TELÉFONO: </string>
-    <string name="Number_example_send_msm">xxxxxxxxxx </string>
-    <string name="Btn_send_msm">SEND MSM</string>
-    <string name="ADRESS_label">DIRECCIÓN</string>
-    <string name="hello_first_fragment">¡Hola desde el primer fragmento!</string>
-    <string name="next">Siguiente</string>
-    <string name="previous">Anterior</string>
-    <string name="first_fragment_label">Etiqueta del primer fragmento</string>
-    <string name="second_fragment_label">Etiqueta del segundo fragmento</string>
+    <string name="COORDENADAS_label">Coordinates</string>
+    <string name="Btn_get_location_msm">GET LOCATION</string>s
+    <string name="Number_send_msm">IP: </string>
+    <string name="Number_example_send_msm"> </string>
+    <string name="Btn_send_ip_udp">SEND UDP</string>
+    <string name="Btn_send_ip_tcp">SEND TCP</string>
     <string name="Get_bottom">GET POSITION</string>
-    <string name="Text_send_label">ENVIA TU POSICIÓN</string>
-    <string name="Text_send_info_label">NÚMERO TELÉFONO: </string>
-    <string name="Send_bottom">SEND MSM</string>
 </resources>
