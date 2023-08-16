@@ -4,6 +4,7 @@
     <string name="COORDENADAS_label">Coordinates</string>
     <string name="Btn_get_location_msm">GET LOCATION</string>s
     <string name="Number_send_msm">IP: </string>
+    <string name="Number_socket">PORT: </string>
     <string name="Number_example_send_msm"> </string>
     <string name="Btn_send_ip_udp">SEND UDP</string>
     <string name="Btn_send_ip_tcp">SEND TCP</string>

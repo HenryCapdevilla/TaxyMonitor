@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Declarar el permiso GPS -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Declarar el permiso SEND_SMS -->
-    <uses-permission android:name="android.permission.SEND_SMS" /> <!-- Declarar el uso opcional del hardware de telefonia -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Declarar el permiso GPS -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Acceso a Internet -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Acceso al estado de la red -->
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
