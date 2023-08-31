@@ -63,14 +63,13 @@
         android:id="@+id/imageView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:contentDescription="@null"
         android:src="@drawable/rectangle_4"
-        app:layout_constraintBottom_toTopOf="@+id/Btn_Get_Location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView8"
-        app:layout_constraintVertical_bias="0.609"
         app:srcCompat="@drawable/rectangle_4" />
 
     <EditText
@@ -136,18 +135,6 @@
         app:layout_constraintTop_toBottomOf="@+id/Input_Port"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/Btn_Get_Location"
-        android:layout_width="154dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/Btn_get_location_msm"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/tv_lbladdress"
         android:layout_width="267dp"
@@ -167,12 +154,10 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="144dp"
         android:text="@string/COORDENADAS_label"
         android:textColor="#3E3E3E"
         android:textSize="12sp"
         android:typeface="normal"
-        app:layout_constraintBottom_toBottomOf="@+id/Btn_Get_Location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.223"
         app:layout_constraintStart_toStartOf="parent"

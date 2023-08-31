@@ -27,10 +27,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -86,17 +87,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case PERMISSION_FINE_LOCATION:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    updateGPS();}
-                else{
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    updateGPS();
+                } else {
                     Toast.makeText(this, "Esta aplicación requiere de permiso concedido para trabajar con propiedades ", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 break;
             case PERMISSION_BACKGROUND_LOCATION: // Nuevo código
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     updateGPS();
                 } else {
                     Toast.makeText(this, "Esta aplicación requiere de permiso de segundo plano, activalo en ajustes ", Toast.LENGTH_SHORT).show();
@@ -105,12 +106,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateGPS(){
+    private void updateGPS() {
         //Obtenemos los permisos del usuario
         //Actualizamos la UI
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
 
-        if (ActivityCompat.checkSelfPermission (this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //El usuario da permiso
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
@@ -120,46 +121,61 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-        }
-        else{
+        } else {
             //El usuario no da permiso aún :(
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION);
         }
     }
 
     private void updateUIValues(Location location) {
-        Btn_Get_Location = findViewById(R.id.Btn_Get_Location);
-        Btn_Get_Location.setOnClickListener(new View.OnClickListener() {
+        udpButton = findViewById(R.id.udpButton);
+        StopButton = findViewById(R.id.StopButton);
+        Timer timer = new Timer();
+        udpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Aquí colocas el código que deseas que se ejecute cuando se hace clic en el botón
-                // Por ejemplo, aquí llamamos a la función updateUIValues y pasamos la ubicación
-                updateUIValues(location);
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        updateLocationAndUI(location);
+                    }
+                }, 0, 10000); // El temporizador se ejecutará cada 10 segundos
+            }
+        });
+        StopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cancelar el temporizador
+                Toast.makeText(MainActivity.this, "Envíos Finalizados", Toast.LENGTH_SHORT).show();
+                timer.cancel();
+            }
+        });
+    }
 
-                // Resto de tu código updateUIValues
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                double altitude = location.getAltitude();
-
-                double time = location.getTime();
-                Date date = new Date((long) time);  // Convertir el valor de tiempo a una instancia de Date
-
-                // Crear un formato para la fecha y la hora
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-
-                String formattedDate = dateFormat.format(date); // Obtener la fecha formateada
-                String formattedTime = timeFormat.format(date); // Obtener la hora formateada
-
-                // Ahora tienes la fecha y la hora en las variables formattedDate y formattedTime
-
-
-                // Concatenar la latitud y longitud en una cadena de texto
-                String latLngAltText = latitude +", " + longitude + ", " + formattedDate + ", " +formattedTime;
-
-                // Actualizar el cuadro de texto con la cadena resultante
-                tv_lbladdress.setText(latLngAltText);
-                Send_Gps_To_Ip();
+    private void updateLocationAndUI(Location location) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location newLocation) {
+                if (newLocation != null) {
+                    // Actualizar la ubicación
+                    location.set(newLocation);
+                    // Resto de tu código para actualizar la interfaz de usuario
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    double time = location.getTime();
+                    // ... (código de formateo de fecha y hora)
+                    Date date = new Date((long) time);  // Convertir el valor de tiempo a una instancia de Date
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    String formattedDate = dateFormat.format(date); // Obtener la fecha formateada
+                    String formattedTime = timeFormat.format(date); // Obtener la hora formateada
+                    String latLngAltText = latitude + ", " + longitude + ", " + formattedDate + ", " + formattedTime;
+                    tv_lbladdress.setText(latLngAltText);
+                    Send_Gps_To_Ip();
+                }
             }
         });
     }
@@ -167,13 +183,10 @@ public class MainActivity extends AppCompatActivity {
     private void Send_Gps_To_Ip() {
         udpButton = findViewById(R.id.udpButton);
         Input_Port = findViewById(R.id.Input_Port);
-
-        udpButton.setOnClickListener(v -> {
-            ipAddress = ipAddressEditText.getText().toString();
-            Port = Input_Port.getText().toString();
-            //Toast.makeText(MainActivity.this, "Botón UDP funciona", Toast.LENGTH_SHORT).show();
-            sendCoordinatesUsingUDP(ipAddress, Port);
-        });
+        ipAddress = ipAddressEditText.getText().toString();
+        Port = Input_Port.getText().toString();
+        //Toast.makeText(MainActivity.this, "Botón UDP funciona", Toast.LENGTH_SHORT).show();
+        sendCoordinatesUsingUDP(ipAddress, Port);
     }
 
     private void sendCoordinatesUsingUDP(final String ipAddress, String port) {

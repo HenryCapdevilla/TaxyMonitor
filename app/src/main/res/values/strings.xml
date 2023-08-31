@@ -6,7 +6,7 @@
     <string name="Number_send_msm">IP: </string>
     <string name="Number_socket">PORT: </string>
     <string name="Number_example_send_msm"> </string>
-    <string name="Btn_send_ip_udp">SEND UDP</string>
+    <string name="Btn_send_ip_udp">START SEND</string>
     <string name="Btn_send_stop">STOP</string>
     <string name="Get_bottom">GET POSITION</string>
 </resources>
