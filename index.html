@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocación</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Geolocación en Tiempo Real</h1>
+        <div id="map" style="height: 400px;"></div>
+        <table>
+            <tr>
+                <th>Longitud</th>
+                <th>Latitud</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+            </tr>
+            <tbody id="dataRows">
+                <!-- El script rellena la tabla -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+    // Initialize the Leaflet map
+    var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
+    var maxMarkersToShow = 2; // Show only the first and last markers
+    var markers = []; // Array to store markers
+    var previousPolyline; // Variable to store the previous polyline
+    var timer; // Timer to clear markers if no new data in 30 seconds
+
+    // Add a tile layer (you can choose your preferred tile layer)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Function to update the map with new geolocation points
+    function updateMap(data) {
+        // Clear previous markers (excluding the first and last) and previousPolyline
+        map.eachLayer(function (layer) {
+            if (layer instanceof L.Marker && markers.indexOf(layer.getLatLng()) === -1) {
+                map.removeLayer(layer);
+            }
+        });
+
+        markers = []; // Reset markers array
+
+        // Create markers and connect them with a polyline
+        for (var i = 0; i < data.length && i < maxMarkersToShow; i++) {
+            var point = data[i];
+            var latlng = [point.latitud, point.longitud];
+
+            var marker = L.marker(latlng);
+
+            markers.push(latlng);
+
+            if (i > 0) {
+                previousPolyline = L.polyline([markers[i - 1], markers[i]], { color: 'blue' }).addTo(map);
+            }
+
+            // Bind a click event to show the popup when the marker is clicked
+            marker.on('click', function () {
+                var popupContent = "Fecha: " + point.fecha + "<br>Hora: " + point.hora;
+                marker.bindPopup(popupContent).openPopup();
+            });
+
+            // Unbind the popup initially to prevent automatic opening
+            marker.unbindPopup();
+
+            // Only add the first and last marker to the map
+            if (i === 0 || i === data.length - 1) {
+                marker.addTo(map);
+            }
+        }
+
+        // Start a timer to remove markers if no new data arrives in 30 seconds
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            map.removeLayer(previousPolyline);
+        }, 30000); // 30 seconds
+    }
+
+    // Function to fetch data and update the map
+    function obtenerDatosYActualizarMapa() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                updateMap(data);
+            }
+        };
+        xhr.open("GET", "obtener_datos.php", true);
+        xhr.send();
+    }
+
+    obtenerDatosYActualizarMapa();
+    setInterval(obtenerDatosYActualizarMapa, 5000); // Fetch data and update the map every 5 seconds
+
+    function obtenerDatos() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                actualizarTabla(data);
+            }
+        };
+        xhr.open("GET", "obtener_datos.php", true);
+        xhr.send();
+    }
+
+    function actualizarTabla(data) {
+        const dataRows = document.getElementById("dataRows");
+        dataRows.innerHTML = ""; // Clear previous rows
+
+        for (const value of data) {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${value.longitud}</td>
+                <td>${value.latitud}</td>
+                <td>${value.fecha}</td>
+                <td>${value.hora}</td>
+            `;
+            dataRows.appendChild(row);
+        }
+    }
+
+    obtenerDatos();
+    setInterval(obtenerDatos, 5000); // Fetch data every 5 seconds
+</script>
+</body>
+</html>
